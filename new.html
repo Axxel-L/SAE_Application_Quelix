@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une demande - Quelix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/img/logo.ico">
+    <style>
+        .progressive-blur {
+            mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.5) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.5) 100%);
+        }
+
+        .glass-card {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .glass-btn-blue {
+            background: rgba(0, 139, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 139, 255, 0.3);
+        }
+
+        .glass-circle {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-shine {
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent 50%);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col relative font-sans">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('Stars_BG.png');"></div>
+    <div class="absolute inset-0 backdrop-blur-lg z-20 progressive-blur"></div>
+
+    <div class="relative z-30 flex flex-col min-h-screen">
+        <header class="px-6 py-4 flex items-center justify-between">
+            <button
+                class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg"
+                onclick="window.history.back()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <div class="flex-1"></div>
+            <button
+                class="h-12 rounded-full glass-circle flex items-center justify-center text-[#0676D4] hover:bg-white/70 transition shadow-lg px-4 space-x-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                </svg>
+                <span class="font-medium text-sm text-black">AI</span>
+            </button>
+        </header>
+
+        <main class="flex-1 flex flex-col items-center px-6 pb-6">
+            <div class="flex-1 flex items-center justify-center w-full max-w-md">
+                <div class="relative rounded-[2.5rem] shadow-2xl glass-card overflow-hidden w-full">
+                    <div class="absolute inset-0 glass-shine rounded-[2.5rem]"></div>
+                    <div class="relative p-8 flex flex-col items-center">
+                        <img src="./img/wand.png" alt="Baguette magique" class="w-20 h-20 mb-6 object-contain">
+                        <div class="w-full text-left">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Qui est sur l'image ?</h2>
+                            <p class="text-gray-700 text-sm">Faites tourner la magie ! Utilisez l'IA pour savoir si
+                                votre image représente Asterix ou Obélix !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full px-2">
+                <button
+                    class="w-full py-4 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition text-lg shadow-xl">
+                    Envoyer une image
+                </button>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
