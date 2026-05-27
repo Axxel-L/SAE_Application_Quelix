@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progressive-blur {
+            mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+        }
+        .glass-card {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .glass-shine {
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.4), transparent 50%);
+            pointer-events: none;
+        }
+        .glass-btn-blue {
+            background: rgba(0, 139, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0,139,255,0.3);
+        }
+        .glass-btn-dark {
+            background: rgba(0, 89, 179, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(0,89,179,0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center relative font-sans">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('Paris_BG.png');"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#3AC6FC] to-[#7261FF] opacity-80 z-10"></div>
+    <div class="absolute inset-0 backdrop-blur-lg z-20 progressive-blur"></div>
+
+    <div class="relative z-30 w-full max-w-sm mx-4">
+        <div class="relative rounded-[2.5rem] shadow-2xl glass-card overflow-hidden">
+            <div class="absolute inset-0 glass-shine rounded-[2.5rem]"></div>
+            <div class="relative p-8 flex flex-col items-center text-gray-800">
+                <div class="w-20 h-20 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center mb-5 shadow-inner border border-white/20">
+                    <svg class="w-10 h-10 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2c0 .7.5 1.2 1.2 1.2h16.8c.7 0 1.2-.5 1.2-1.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800">Connexion</h2>
+                <div class="w-full mb-4">
+                    <input type="email" placeholder="Adresse mail" class="w-full px-4 py-3 rounded-3xl bg-white/50 placeholder-gray-500 text-gray-900 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition">
+                </div>
+                <div class="w-full mb-6">
+                    <input type="password" placeholder="Mot de passe" class="w-full px-4 py-3 rounded-3xl bg-white/50 placeholder-gray-500 text-gray-900 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition">
+                </div>
+                <button class="w-full py-3 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition mb-3">Se connecter</button>
+                <button class="w-full py-3 rounded-3xl glass-btn-dark text-white font-semibold hover:bg-[#0059b3]/95 transition">Continuer en anonyme</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
