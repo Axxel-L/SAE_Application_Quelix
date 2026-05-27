@@ -1,39 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <title> Accueil Anonyme</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil Anonyme</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Georgia, serif;
+      overflow: hidden;
+    }
+
+    /* ── Fond image ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background-image: url('votre-image.jpg'); /* ← remplacez ici */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 0;
+    }
+
+    /* Voile sombre pour lisibilité */
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.35) 0%,
+        rgba(0, 0, 0, 0.10) 45%,
+        rgba(0, 0, 0, 0.40) 100%
+      );
+    }
+
+    /* ── Contenu principal ── */
+    .page {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ── Barre de navigation ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 32px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      transition: opacity 0.2s;
+    }
+
+    .nav-btn:hover { opacity: 0.7; }
+
+    .nav-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-icon i {
+      color: white;
+      font-size: 19px;
+    }
+
+    nav h1 {
+      color: white;
+      font-family: Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ── Zone centrale ── */
+    .center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Barre du bas ── */
+    footer {
+      display: flex;
+      justify-content: center;
+      padding: 0 32px 36px;
+    }
+
+    .stats-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 52px;
+      border-radius: 999px;
+      background: rgba(55, 138, 221, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-family: -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      box-shadow: 0 8px 32px rgba(10, 30, 120, 0.28);
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .stats-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+    .stats-btn:active {
+      transform: translateY(0);
+    }
+
+    .stats-btn i {
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-      <div style="position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:20px 32px">
-    <!-- Logo / home -->
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.22);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center">
-        <i class="ti ti-user" style="color:white;font-size:20px"></i>
-      </div>
-      <span style="color:rgba(255,255,255,0.85);font-size:13px;font-weight:400;letter-spacing:0.03em">Mon profil</span>
-    </a>
 
-    <!-- Title -->
-    <span style="color:white;font-family:Georgia,serif;font-size:22px;letter-spacing:0.06em;text-shadow:0 2px 12px rgba(0,0,0,0.25)">Accueil</span>
+  <!-- Fond image -->
+  <div class="bg"></div>
 
-    <!-- Add -->
-    <a href="nouvelle-page.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <span style="color:rgba(255,255,255,0.85);font-size:13px;font-weight:400;letter-spacing:0.03em">Ajouter</span>
-      <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.22);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center">
-        <i class="ti ti-plus" style="color:white;font-size:20px"></i>
-      </div>
-    </a>
+  <!-- Contenu -->
+  <div class="page">
+
+    <!-- Navigation -->
+    <nav>
+      <a href="index.html" class="nav-btn">
+        <div class="nav-icon"><i class="ti ti-user"></i></div>
+        <span>Mon profil</span>
+      </a>
+
+      <h1>Accueil</h1>
+
+      <a href="nouvelle-page.html" class="nav-btn">
+        <span>Ajouter</span>
+        <div class="nav-icon"><i class="ti ti-plus"></i></div>
+      </a>
+    </nav>
+
+    <!-- Zone centrale (vide / contenu futur) -->
+    <div class="center">
+      <!-- Placez ici votre contenu central si besoin -->
+    </div>
+
+    <!-- Bouton statistiques -->
+    <footer>
+      <a href="statistiques.html" class="stats-btn">
+        <i class="ti ti-chart-line"></i>
+        Voir les statistiques
+      </a>
+    </footer>
+
   </div>
 
-  <!-- CENTRE vide (fond visible) -->
-  <div style="height:300px"></div>
-
-  <!-- BOTTOM BAR -->
-  <div style="position:relative;z-index:10;display:flex;justify-content:center;padding:0 32px 32px">
-    <a href="statistiques.html" style="display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:999px;background:rgba(70,130,240,0.88);backdrop-filter:blur(10px);color:white;font-size:15px;font-weight:500;text-decoration:none;letter-spacing:0.01em;box-shadow:0 8px 32px rgba(10,30,120,0.3);transition:transform 0.15s">
-      <i class="ti ti-chart-line" style="font-size:18px"></i>
-      Voir les statistiques
-    </a>
-  </div>
-
-</div>
-</body>  <!-- TOP NAV -->
-
+</body>
+</html>
