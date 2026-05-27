@@ -18,27 +18,29 @@
       overflow: hidden;
     }
 
-    /* ── Fond image ── */
+    /* ── Fond image + dégradé ── */
     .bg {
       position: fixed;
       inset: 0;
-      background-image: url('Paris_BG.png'); 
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-image:
+        url('Paris_BG.png'),
+        linear-gradient(160deg, #7c3aed, #2563eb);
+      background-size: cover, cover;
+      background-position: center, center;
+      mix-blend-mode: multiply;
       z-index: 0;
     }
 
-    /* Voile sombre pour lisibilité */
+    /* Voile pour lisibilité */
     .bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.35) 0%,
-        rgba(0, 0, 0, 0.10) 45%,
-        rgba(0, 0, 0, 0.40) 100%
+        rgba(0, 0, 0, 0.20) 0%,
+        rgba(0, 0, 0, 0.05) 45%,
+        rgba(0, 0, 0, 0.30) 100%
       );
     }
 
@@ -51,7 +53,7 @@
       height: 100vh;
     }
 
-    /* ── Barre de navigation ── */
+    /* ── Navigation ── */
     nav {
       display: flex;
       align-items: center;
@@ -78,10 +80,6 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.22);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -110,7 +108,15 @@
       justify-content: center;
     }
 
-    /* ── Barre du bas ── */
+    .center p {
+      color: rgba(255, 255, 255, 0.75);
+      font-family: -apple-system, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ── Footer ── */
     footer {
       display: flex;
       justify-content: center;
@@ -123,46 +129,45 @@
       gap: 10px;
       padding: 16px 52px;
       border-radius: 999px;
-      background: rgba(55, 138, 221, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
       font-family: -apple-system, sans-serif;
       font-size: 15px;
       font-weight: 500;
       text-decoration: none;
       letter-spacing: 0.01em;
-      box-shadow: 0 8px 32px rgba(10, 30, 120, 0.28);
       transition: transform 0.15s, opacity 0.15s;
     }
 
-    .stats-btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.92;
+    .stats-btn:hover  { transform: translateY(-2px); opacity: 0.9; }
+    .stats-btn:active { transform: translateY(0); }
+    .stats-btn i { font-size: 18px; }
+
+    /* ── Classes glass ── */
+    .glass-card {
+      background-color: rgba(245, 245, 245, 0.15);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    .stats-btn:active {
-      transform: translateY(0);
-    }
-
-    .stats-btn i {
-      font-size: 18px;
+    .glass-btn-blue {
+      background: rgba(0, 139, 255, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(0, 139, 255, 0.35);
     }
   </style>
 </head>
 <body>
 
-  <!-- Fond image -->
   <div class="bg"></div>
 
-  <!-- Contenu -->
   <div class="page">
 
-    <!-- Navigation -->
     <nav>
       <a href="index.html" class="nav-btn">
-        <div class="nav-icon"><i class="ti ti-user"></i></div>
+        <div class="nav-icon glass-card"><i class="ti ti-user"></i></div>
         <span>Connexion</span>
       </a>
 
@@ -170,18 +175,16 @@
 
       <a href=" " class="nav-btn">
         <span>Ajouter un fichier/image/photo</span>
-        <div class="nav-icon"><i class="ti ti-plus"></i></div>
+        <div class="nav-icon glass-card"><i class="ti ti-plus"></i></div>
       </a>
     </nav>
 
-    <!-- Zone centrale (vide / contenu futur) -->
     <div class="center">
-      <p>Connectez-vous afin d'accèder à votre historique.</p>
+      <p>Connectez-vous afin d'accéder à votre historique.</p>
     </div>
 
-    <!-- Bouton statistiques -->
     <footer>
-      <a href="statistiques.html" class="stats-btn">
+      <a href="statistiques.html" class="stats-btn glass-btn-blue">
         <i class="ti ti-chart-line"></i>
         Voir les statistiques
       </a>
