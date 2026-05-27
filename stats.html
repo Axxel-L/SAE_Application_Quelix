@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Quelix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/x-icon" href="img/logo.png">
+    <style>
+        .progressive-blur {
+            mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+        }
+        .glass-card {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .glass-circle {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .glass-shine {
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.4), transparent 50%);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative font-sans">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('Paris_BG.png');"></div>
+    <div class="absolute inset-0 bg-gradient-to-bl from-[#3AC6FC] to-[#7261FF] opacity-80 z-10"></div>
+    <div class="absolute inset-0 backdrop-blur-lg z-20 progressive-blur"></div>
+
+    <div class="relative z-30 flex flex-col min-h-screen">
+        <header class="px-6 py-4 flex items-center justify-between">
+            <div class="flex-1 flex justify-start">
+                <button class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            <h1 class="text-gray-800 text-xl font-semibold tracking-wide">Accueil</h1>
+            <div class="flex-1 flex justify-end">
+                <button class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 flex items-center justify-center px-6 pb-6">
+            <div class="w-full max-w-md">
+                <div class="relative rounded-[2.5rem] shadow-2xl glass-card overflow-hidden">
+                    <div class="absolute inset-0 glass-shine rounded-[2.5rem]"></div>
+                    <div class="relative p-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">📊 Statistiques</h2>
+                        <div class="space-y-2 text-gray-800 mb-6">
+                            <p><span class="font-medium">Asterix :</span> 12 fois trouvé</p>
+                            <p><span class="font-medium">Obélix :</span> 8 fois trouvé</p>
+                            <p><span class="font-medium">Autres :</span> 5 fois trouvé</p>
+                        </div>
+                        <div class="bg-white/30 rounded-2xl p-3">
+                            <canvas id="statsChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('statsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Asterix', 'Obélix', 'Autres'],
+                datasets: [{
+                    label: 'Nombre de réussites',
+                    data: [12, 8, 5],
+                    backgroundColor: [
+                        'rgba(58, 198, 252, 0.7)',
+                        'rgba(114, 97, 255, 0.7)',
+                        'rgba(0, 139, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(58, 198, 252, 1)',
+                        'rgba(114, 97, 255, 1)',
+                        'rgba(0, 139, 255, 1)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#1f2937',
+                            font: { size: 14 }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 2,
+                            color: '#1f2937'
+                        },
+                        grid: {
+                            color: 'rgba(255,255,255,0.2)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#1f2937'
+                        },
+                        grid: {
+                            color: 'rgba(255,255,255,0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
