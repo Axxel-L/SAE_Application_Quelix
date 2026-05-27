@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Quelix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progressive-blur {
+            mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+        }
+        .glass-card {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .glass-btn-blue {
+            background: rgba(0, 139, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0,139,255,0.3);
+        }
+        .glass-circle {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .table-row-separator {
+            border-top: 1px solid #e6e6e61b;
+        }
+        .table-row-separator:first-child {
+            border-top: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative font-sans">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('Paris_BG.png');"></div>
+    <div class="absolute inset-0 bg-gradient-to-bl from-[#3AC6FC] to-[#7261FF] opacity-80 z-10"></div>
+    <div class="absolute inset-0 backdrop-blur-lg z-20 progressive-blur"></div>
+
+    <div class="relative z-30 flex flex-col min-h-screen">
+        <header class="px-6 py-4 flex items-center justify-between">
+            <div class="flex-1"></div>
+            <h1 class="text-gray-800 text-xl font-semibold tracking-wide">Accueil</h1>
+            <div class="flex-1 flex justify-end">
+                <button class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 flex flex-col items-center px-6">
+            <div class="w-full max-w-md mt-4 flex-1">
+                <table class="w-full border-collapse">
+                    <tbody>
+                        <tr class="table-row-separator">
+                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">26/05/2026</td>
+                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">Asterix</td>
+                            <td class="px-3 py-3"><span class="bg-green-400/20 text-green-300 px-2 py-1 rounded-full text-xs">Trouvé !</span></td>
+                        </tr>
+                        <tr class="table-row-separator">
+                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">25/05/2026</td>
+                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">Obélix</td>
+                            <td class="px-3 py-3"><span class="bg-red-400/20 text-red-300 px-2 py-1 rounded-full text-xs">Pas trouvé</span></td>
+                        </tr>
+                        <tr class="table-row-separator">
+                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">24/05/2026</td>
+                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">Autres</td>
+                            <td class="px-3 py-3"><span class="bg-red-400/20 text-red-300 px-2 py-1 rounded-full text-xs">Pas trouvé</span></td>
+                        </tr>
+                        <tr class="table-row-separator">
+                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">23/05/2026</td>
+                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
+                            <td class="px-3 py-3 text-sm text-gray-800">Asterix</td>
+                            <td class="px-3 py-3"><span class="bg-red-400/20 text-red-300 px-2 py-1 rounded-full text-xs">Pas trouvé</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w-full max-w-md mb-6 px-2">
+                <button class="w-full py-4 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition text-lg shadow-xl">
+                    Voir les statistiques
+                </button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
