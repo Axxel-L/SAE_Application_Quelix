@@ -10,31 +10,38 @@
 
     body {
       min-height: 100vh;
-      font-family: Georgia, serif;
+      font-family: -apple-system, sans-serif;
       overflow: hidden;
     }
 
+    /* Image de fond */
     .bg {
       position: fixed;
       inset: 0;
-      background-image:
-        url('Paris_BG.png'),
-        linear-gradient(160deg, #7c3aed, #2563eb);
-      background-size: cover, cover;
-      background-position: center, center;
-      mix-blend-mode: multiply;
+      background-image: url('Paris_BG.png');
+      background-size: cover;
+      background-position: center;
       z-index: 0;
     }
 
+    /* Dégradé bleu/violet par-dessus, sans mix-blend-mode */
+    .bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(58, 198, 252, 0.82), rgba(114, 97, 255, 0.82));
+    }
+
+    /* Voile haut/bas pour lisibilité */
     .bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.20) 0%,
-        rgba(0,0,0,0.05) 45%,
-        rgba(0,0,0,0.30) 100%
+        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.0)  45%,
+        rgba(0,0,0,0.25) 100%
       );
     }
 
@@ -59,7 +66,6 @@
       gap: 10px;
       text-decoration: none;
       color: rgba(255,255,255,0.88);
-      font-family: -apple-system, sans-serif;
       font-size: 13px;
       font-weight: 400;
       letter-spacing: 0.04em;
@@ -75,16 +81,17 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      background-color: rgba(245,245,245,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
     }
     .nav-icon i { color: white; font-size: 19px; }
 
     nav h1 {
       color: white;
-      font-family: Georgia, serif;
       font-size: 22px;
-      font-weight: 400;
-      letter-spacing: 0.07em;
-      text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.2);
     }
 
     .center {
@@ -95,11 +102,10 @@
     }
 
     .center p {
-      color: rgba(255,255,255,0.75);
-      font-family: -apple-system, sans-serif;
+      color: rgba(255,255,255,0.80);
       font-size: 14px;
       letter-spacing: 0.02em;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
     }
 
     footer {
@@ -115,31 +121,18 @@
       padding: 16px 52px;
       border-radius: 999px;
       color: white;
-      font-family: -apple-system, sans-serif;
       font-size: 15px;
       font-weight: 500;
       text-decoration: none;
       letter-spacing: 0.01em;
       transition: transform 0.15s, opacity 0.15s;
+      background: rgba(0, 89, 179, 0.85);
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 24px rgba(0,89,179,0.35);
     }
     .stats-btn:hover  { transform: translateY(-2px); opacity: 0.9; }
     .stats-btn:active { transform: translateY(0); }
     .stats-btn i { font-size: 18px; }
-
-    .glass-card {
-      background-color: rgba(245,245,245,0.15);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .glass-btn-blue {
-      background: rgba(0,139,255,0.8);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 4px 24px rgba(0,139,255,0.35);
-    }
   </style>
 </head>
 <body>
@@ -150,7 +143,7 @@
 
     <nav>
       <a href="index.html" class="nav-btn">
-        <div class="nav-icon glass-card"><i class="ti ti-user"></i></div>
+        <div class="nav-icon"><i class="ti ti-user"></i></div>
         <span>Connexion</span>
       </a>
 
@@ -158,7 +151,7 @@
 
       <a href=" " class="nav-btn">
         <span>Ajouter un fichier / image / photo</span>
-        <div class="nav-icon glass-card"><i class="ti ti-plus"></i></div>
+        <div class="nav-icon"><i class="ti ti-plus"></i></div>
       </a>
     </nav>
 
@@ -167,7 +160,7 @@
     </div>
 
     <footer>
-      <a href="statistiques.html" class="stats-btn glass-btn-blue">
+      <a href="stats.html" class="stats-btn">
         <i class="ti ti-chart-line"></i>
         Voir les statistiques
       </a>
