@@ -6,11 +6,7 @@
   <title>Accueil Anonyme</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       min-height: 100vh;
@@ -18,7 +14,6 @@
       overflow: hidden;
     }
 
-    /* ── Fond image + dégradé ── */
     .bg {
       position: fixed;
       inset: 0;
@@ -31,20 +26,18 @@
       z-index: 0;
     }
 
-    /* Voile pour lisibilité */
     .bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.20) 0%,
-        rgba(0, 0, 0, 0.05) 45%,
-        rgba(0, 0, 0, 0.30) 100%
+        rgba(0,0,0,0.20) 0%,
+        rgba(0,0,0,0.05) 45%,
+        rgba(0,0,0,0.30) 100%
       );
     }
 
-    /* ── Contenu principal ── */
     .page {
       position: relative;
       z-index: 10;
@@ -53,7 +46,6 @@
       height: 100vh;
     }
 
-    /* ── Navigation ── */
     nav {
       display: flex;
       align-items: center;
@@ -66,14 +58,13 @@
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255,255,255,0.88);
       font-family: -apple-system, sans-serif;
       font-size: 13px;
       font-weight: 400;
       letter-spacing: 0.04em;
       transition: opacity 0.2s;
     }
-
     .nav-btn:hover { opacity: 0.7; }
 
     .nav-icon {
@@ -85,11 +76,7 @@
       justify-content: center;
       flex-shrink: 0;
     }
-
-    .nav-icon i {
-      color: white;
-      font-size: 19px;
-    }
+    .nav-icon i { color: white; font-size: 19px; }
 
     nav h1 {
       color: white;
@@ -97,10 +84,9 @@
       font-size: 22px;
       font-weight: 400;
       letter-spacing: 0.07em;
-      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 2px 16px rgba(0,0,0,0.3);
     }
 
-    /* ── Zone centrale ── */
     .center {
       flex: 1;
       display: flex;
@@ -109,14 +95,13 @@
     }
 
     .center p {
-      color: rgba(255, 255, 255, 0.75);
+      color: rgba(255,255,255,0.75);
       font-family: -apple-system, sans-serif;
       font-size: 14px;
       letter-spacing: 0.02em;
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
     }
 
-    /* ── Footer ── */
     footer {
       display: flex;
       justify-content: center;
@@ -137,25 +122,23 @@
       letter-spacing: 0.01em;
       transition: transform 0.15s, opacity 0.15s;
     }
-
     .stats-btn:hover  { transform: translateY(-2px); opacity: 0.9; }
     .stats-btn:active { transform: translateY(0); }
     .stats-btn i { font-size: 18px; }
 
-    /* ── Classes glass ── */
     .glass-card {
-      background-color: rgba(245, 245, 245, 0.15);
+      background-color: rgba(245,245,245,0.15);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255,255,255,0.25);
     }
 
     .glass-btn-blue {
-      background: rgba(0, 139, 255, 0.8);
+      background: rgba(0,139,255,0.8);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 24px rgba(0, 139, 255, 0.35);
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 24px rgba(0,139,255,0.35);
     }
   </style>
 </head>
@@ -171,10 +154,10 @@
         <span>Connexion</span>
       </a>
 
-      <h1>Accueil - Anonyme</h1>
+      <h1>Accueil – Anonyme</h1>
 
       <a href=" " class="nav-btn">
-        <span>Ajouter un fichier/image/photo</span>
+        <span>Ajouter un fichier / image / photo</span>
         <div class="nav-icon glass-card"><i class="ti ti-plus"></i></div>
       </a>
     </nav>
