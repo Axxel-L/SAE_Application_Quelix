@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progressive-blur {
+            mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+        }
+        .glass-card {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .glass-circle {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .glass-btn-blue {
+            background: rgba(0, 139, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0,139,255,0.3);
+        }
+        .glass-btn-transparent {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #1f2937;
+        }
+        .chat-bubble-left {
+            position: relative;
+        }
+        .chat-bubble-left::after {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: -12px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 12px solid rgba(245, 245, 245, 0.6);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative font-sans">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('Toys_BG.png');"></div>
+    <div class="absolute inset-0 bg-[#92B788]/80 z-10"></div>
+    <div class="absolute inset-0 backdrop-blur-lg z-20 progressive-blur"></div>
+
+    <div class="relative z-30 flex flex-col min-h-screen">
+        <header class="px-6 py-4 flex items-center justify-between">
+            <button
+                class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg"
+                onclick="window.history.back()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <div class="flex-1"></div>
+            <button
+                class="h-12 rounded-full glass-circle flex flex-col items-center justify-center text-[#0676D4] hover:bg-white/70 transition shadow-lg px-4">
+                <div class="flex items-center space-x-2">
+                    <span class="font-medium text-sm text-black">Quelix</span>
+                    <img width="24" height="24" src="https://img.icons8.com/color/24/verified-badge.png" alt="verified-badge"/>
+                </div>                
+                <span class="text-xs text-gray-700">Bot</span>
+            </button>
+        </header>
+
+        <main class="flex-1 flex flex-col space-y-6 px-6 py-4 overflow-y-auto">
+            <div class="w-full max-w-xs">
+                <div class="glass-card rounded-3xl p-4 chat-bubble-left shadow-lg">
+                    <div class="flex justify-center mb-3">
+                        <img src="./img/gif/voyante.gif" alt="Analyse" class="w-24 h-24 rounded-xl object-cover">
+                    </div>
+                    <p class="text-gray-800 text-sm leading-relaxed">
+                        Analyse en cours… 🤖✨<br>
+                        Selon mes calculs d’IA, ton image représente Astérix.<br>
+                        Mais attention, je garde encore un petit doute… Obélix pourrait bien pointer le bout de son nez.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-2">
+                <button class="px-5 py-2 rounded-full glass-btn-blue text-white font-medium text-sm hover:bg-[#008BFF]/90 transition shadow-lg">Action 1</button>
+                <button class="px-5 py-2 rounded-full glass-btn-blue text-white font-medium text-sm hover:bg-[#008BFF]/90 transition shadow-lg">Action 2</button>
+                <button class="px-5 py-2 rounded-full glass-btn-transparent font-medium text-sm hover:bg-white/30 transition shadow-lg">Autre</button>
+            </div>
+
+            <div class="w-full max-w-xs">
+                <div class="glass-card rounded-3xl p-4 chat-bubble-left shadow-lg">
+                    <p class="text-gray-800 text-sm">
+                        D’après mes calculs, j’ai fait 10 fautes, mais trouvé 214 bons résultats !
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
