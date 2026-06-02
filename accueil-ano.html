@@ -1,172 +1,77 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accueil Anonyme</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      min-height: 100vh;
-      font-family: -apple-system, sans-serif;
-      overflow: hidden;
-    }
-
-    /* Image de fond */
-    .bg {
-      position: fixed;
-      inset: 0;
-      background-image: url('Paris_BG.png');
-      background-size: cover;
-      background-position: center;
-      z-index: 0;
-    }
-
-    /* Dégradé bleu/violet par-dessus, sans mix-blend-mode */
-    .bg::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(58, 198, 252, 0.82), rgba(114, 97, 255, 0.82));
-    }
-
-    /* Voile haut/bas pour lisibilité */
-    .bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.15) 0%,
-        rgba(0,0,0,0.0)  45%,
-        rgba(0,0,0,0.25) 100%
-      );
-    }
-
-    .page {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 24px 32px;
-    }
-
-    .nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: rgba(255,255,255,0.88);
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      transition: opacity 0.2s;
-    }
-    .nav-btn:hover { opacity: 0.7; }
-
-    .nav-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      background-color: rgba(245,245,245,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-    .nav-icon i { color: white; font-size: 19px; }
-
-    nav h1 {
-      color: white;
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-shadow: 0 2px 16px rgba(0,0,0,0.2);
-    }
-
-    .center {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .center p {
-      color: rgba(255,255,255,0.80);
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
-    }
-
-    footer {
-      display: flex;
-      justify-content: center;
-      padding: 0 32px 36px;
-    }
-
-    .stats-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 52px;
-      border-radius: 999px;
-      color: white;
-      font-size: 15px;
-      font-weight: 500;
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: transform 0.15s, opacity 0.15s;
-      background: rgba(0, 89, 179, 0.85);
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 4px 24px rgba(0,89,179,0.35);
-    }
-    .stats-btn:hover  { transform: translateY(-2px); opacity: 0.9; }
-    .stats-btn:active { transform: translateY(0); }
-    .stats-btn i { font-size: 18px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil Anonyme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progressive-blur {
+            mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 25%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.5) 100%);
+        }
+        .glass-card {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .glass-circle {
+            background-color: rgba(245, 245, 245, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .glass-btn-blue {
+            background: rgba(0, 139, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0,139,255,0.3);
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col relative font-sans">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('Paris_BG.png');"></div>
+    <div class="absolute inset-0 bg-gradient-to-bl from-[#3AC6FC] to-[#7261FF] opacity-80 z-10"></div>
+    <div class="absolute inset-0 backdrop-blur-lg z-20 progressive-blur"></div>
 
-  <div class="bg"></div>
+    <div class="relative z-30 flex flex-col min-h-screen">
+        <header class="px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 text-gray-800 hover:opacity-80 transition">
+                <div class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 shadow-lg">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2c0 .7.5 1.2 1.2 1.2h16.8c.7 0 1.2-.5 1.2-1.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/>
+                    </svg>
+                </div>
+            </a>
 
-  <div class="page">
+            <h1 class="text-gray-800 text-xl font-semibold tracking-wide">Accueil</h1>
 
-    <nav>
-      <a href="index.html" class="nav-btn">
-        <div class="nav-icon"><i class="ti ti-user"></i></div>
-        <span>Connexion</span>
-      </a>
+            <a href="new.html" class="flex items-center gap-2 text-gray-800 hover:opacity-80 transition">
+                <div class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+            </a>
+        </header>
 
-      <h1>Accueil – Anonyme</h1>
+        <main class="flex-1 flex items-center justify-center px-6">
+            <div class="glass-card rounded-3xl px-8 py-6 shadow-2xl">
+                <p class="text-gray-800 text-center text-sm">Connectez-vous afin d'accéder à votre historique.</p>
+            </div>
+        </main>
 
-      <a href="new.html" class="nav-btn">
-        <span>Ajouter un fichier / image / photo</span>
-        <div class="nav-icon"><i class="ti ti-plus"></i></div>
-      </a>
-    </nav>
-
-    <div class="center">
-      <p>Connectez-vous afin d'accéder à votre historique.</p>
+        <footer class="flex justify-center px-6 pb-8">
+            <a href="stats.html" class="w-full max-w-md py-4 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition text-lg shadow-xl flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18M7 16l4-4 4 4 5-5"/>
+                </svg>
+                Voir les statistiques
+            </a>
+        </footer>
     </div>
-
-    <footer>
-      <a href="stats.html" class="stats-btn">
-        <i class="ti ti-chart-line"></i>
-        Voir les statistiques
-      </a>
-    </footer>
-
-  </div>
-
 </body>
 </html>
