@@ -115,12 +115,9 @@
         </main>
     </div>
 
-    <!-- Modal -->
     <div id="modal-overlay" onclick="handleOverlayClick(event)">
         <div id="modal-box" class="w-full max-w-sm mx-4 rounded-[2rem] overflow-hidden shadow-2xl"
              style="background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
-
-            <!-- Poignée -->
             <div class="flex justify-center pt-3 pb-1">
                 <div class="w-10 h-1 rounded-full bg-gray-300"></div>
             </div>
@@ -129,7 +126,6 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-1">Importe une image</h3>
                 <p class="text-gray-500 text-sm mb-6">ou prends une photo avec la webcam</p>
 
-                <!-- Input fichier caché -->
                 <input type="file" id="file-input" accept="image/*" class="hidden">
 
                 <button
@@ -153,7 +149,6 @@
         function openModal() {
             const overlay = document.getElementById('modal-overlay');
             overlay.style.display = 'flex';
-            // Déclenche l'animation après le rendu
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => overlay.classList.add('open'));
             });
@@ -170,15 +165,15 @@
         }
 
         function openWebcam() {
-            // À brancher sur ta logique webcam
-            closeModal();
+            // Ouvrir la webcam, l'enregistrer puis l'envoyer à l'API
+            // Puis on reridige vers la page de conversation
+            window.location.href = 'conversation.html';
         }
 
-        // Quand un fichier est sélectionné
         document.getElementById('file-input').addEventListener('change', function () {
             if (this.files.length > 0) {
-                closeModal();
-                // À brancher sur ta logique de traitement
+                // On envoie l'image à l'API
+                window.location.href = 'conversation.html';
             }
         });
     </script>
