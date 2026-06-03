@@ -60,37 +60,9 @@
 
         <main class="flex-1 flex flex-col items-center px-6">
             <div class="w-full max-w-md mt-4 flex-1">
-                <table class="w-full border-collapse">
-                    <tbody>
-                        <tr class="table-row-separator">
-                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">26/05/2026</td>
-                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">Asterix</td>
-                            <td class="px-3 py-3"><span class="bg-green-400/20 text-green-300 px-2 py-1 rounded-full text-xs">Trouvé !</span></td>
-                        </tr>
-                        <tr class="table-row-separator">
-                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">25/05/2026</td>
-                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">Obélix</td>
-                            <td class="px-3 py-3"><span class="bg-red-400/20 text-red-300 px-2 py-1 rounded-full text-xs">Pas trouvé</span></td>
-                        </tr>
-                        <tr class="table-row-separator">
-                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">24/05/2026</td>
-                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">Autres</td>
-                            <td class="px-3 py-3"><span class="bg-red-400/20 text-red-300 px-2 py-1 rounded-full text-xs">Pas trouvé</span></td>
-                        </tr>
-                        <tr class="table-row-separator">
-                            <td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">23/05/2026</td>
-                            <td class="px-3 py-3"><img src="img/placeholder.png" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img"></td>
-                            <td class="px-3 py-3 text-sm text-gray-800">Asterix</td>
-                            <td class="px-3 py-3"><span class="bg-red-400/20 text-red-300 px-2 py-1 rounded-full text-xs">Pas trouvé</span></td>
-                        </tr>
-                    </tbody>
+                <div id="loading-state" class="text-center py-10 text-gray-800 font-medium">Chargement des données...</div>
+                <table id="guesses-table" class="w-full border-collapse hidden">
+                    <tbody id="guesses-list"></tbody>
                 </table>
             </div>
 
@@ -101,5 +73,11 @@
             </div>
         </main>
     </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Lancer l'affichage des données une fois la page chargée
+        document.addEventListener('DOMContentLoaded', loadGuesses);
+    </script>
 </body>
 </html>
