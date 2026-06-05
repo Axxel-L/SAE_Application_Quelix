@@ -72,17 +72,18 @@ async function loadGuesses() {
         if (tableElement) tableElement.classList.remove('hidden');
 
         if (listElement) {
+            console.log('Guesses bruts:', guesses);
             listElement.innerHTML = guesses.map(item => {
                 const dateRaw = item.created_at || item.date || '';
                 const dateFormatted = dateRaw ? new Date(dateRaw).toLocaleDateString('fr-FR') : '?';
-                // Image : utiliser image_path ou imagepath
-                const imgPath = item.image_path || item.imagepath || '';
-                const imageUrl = imgPath ? 'https://toutatix.axel-l.me/' + imgPath : 'img/placeholder.png';
+                // Image : utiliser filename, image_path ou imagepath
+                const imgPath = item.filename || item.image_path || item.imagepath || '';
+                const imageUrl = imgPath ? 'https://toutatix.axel-l.me/data/' + imgPath : 'img/placeholder.png';
 
-                // Statut
-                const winVal = item.win || 0;
-                const winStatus = winVal === 1 ? 'Trouvé !' : 'Pas trouvé';
-                const winClass = winVal === 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
+                // Statut : essayer plusieurs champs possibles
+                const winVal = item.winned || item.win || 0;
+                const winStatus = winVal == 1 ? 'Trouvé !' : 'Pas trouvé';
+                const winClass = winVal == 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
 
                 return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
             }).join('');
