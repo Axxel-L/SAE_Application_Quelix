@@ -1,3 +1,12 @@
+/* Variables globales */
+const GUESSES_PAGE_SIZE = 10;
+let guessesCurrentPage = 1;
+let allGuessesData = [];
+
+/* 
+* Permet de se connecter à l'API avec les identifiants de l'utilisateur
+* Stock les données dans localStorage pour les requêtes suivantes.
+*/ 
 async function handleLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -71,28 +80,57 @@ async function loadGuesses() {
         if (loadingElement) loadingElement.classList.add('hidden');
         if (tableElement) tableElement.classList.remove('hidden');
 
-        if (listElement) {
-            console.log('Guesses bruts:', guesses);
-            listElement.innerHTML = guesses.map(item => {
-                const dateRaw = item.created_at || item.date || '';
-                const dateFormatted = dateRaw ? new Date(dateRaw).toLocaleDateString('fr-FR') : '?';
-                // Image : utiliser filename, image_path ou imagepath
-                const imgPath = item.filename || item.image_path || item.imagepath || '';
-                const imageUrl = imgPath ? 'https://toutatix.axel-l.me/data/' + imgPath : 'img/placeholder.png';
-
-                // Statut : essayer plusieurs champs possibles
-                const winVal = item.winned || item.win || 0;
-                const winStatus = winVal == 1 ? 'Trouvé !' : 'Pas trouvé';
-                const winClass = winVal == 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
-
-                return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
-            }).join('');
-        }
+        allGuessesData = guesses;
+        guessesCurrentPage = 1;
+        renderGuessesPage();
+        console.log('Guesses bruts:', guesses);
 
     } catch (error) {
         console.error("Erreur lors du chargement des guesses:", error);
         if (loadingElement) loadingElement.innerText = "Impossible de charger l'historique.";
     }
+}
+
+function renderGuessesPage() {
+    const listElement = document.getElementById('guesses-list');
+    if (!listElement) return;
+    const start = (guessesCurrentPage - 1) * GUESSES_PAGE_SIZE;
+    const end = start + GUESSES_PAGE_SIZE;
+    const pageItems = allGuessesData.slice(start, end);
+    listElement.innerHTML = pageItems.map(guessRowHTML).join('');
+    renderPaginationControls();
+}
+
+function renderPaginationControls() {
+    const container = document.getElementById('pagination-controls');
+    if (!container) return;
+    const totalPages = Math.ceil(allGuessesData.length / GUESSES_PAGE_SIZE);
+    if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+    container.innerHTML = `
+        <button onclick="goToGuessesPage(${guessesCurrentPage - 1})"
+            class="w-10 h-10 rounded-full bg-white/60 backdrop-blur-md border border-white/25 shadow-lg flex items-center justify-center text-gray-800 hover:bg-white/70 transition disabled:opacity-30 disabled:cursor-not-allowed"
+            ${guessesCurrentPage === 1 ? 'disabled' : ''}>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <span class="px-3 py-1 text-sm text-gray-800 font-medium self-center bg-white/40 backdrop-blur-sm rounded-full">${guessesCurrentPage} / ${totalPages}</span>
+        <button onclick="goToGuessesPage(${guessesCurrentPage + 1})"
+            class="w-10 h-10 rounded-full bg-white/60 backdrop-blur-md border border-white/25 shadow-lg flex items-center justify-center text-gray-800 hover:bg-white/70 transition disabled:opacity-30 disabled:cursor-not-allowed"
+            ${guessesCurrentPage === totalPages ? 'disabled' : ''}>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>`;
+}
+
+function goToGuessesPage(page) {
+    const totalPages = Math.ceil(allGuessesData.length / GUESSES_PAGE_SIZE);
+    if (page < 1 || page > totalPages) return;
+    guessesCurrentPage = page;
+    renderGuessesPage();
+    document.getElementById('guesses-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /**
@@ -166,4 +204,18 @@ async function sendFeedback(id, win) {
 
     if (!response.ok) throw new Error('Erreur HTTP ' + response.status);
     return await response.json();
+}
+
+/* Système de pagination pour l'historique des guesses 
+* Génère le HTML d'une ligne. 
+*/
+function guessRowHTML(item) {
+    const dateRaw = item.created_at || item.date || '';
+    const dateFormatted = dateRaw ? new Date(dateRaw).toLocaleDateString('fr-FR') : '?';
+    const imgPath = item.filename || item.image_path || item.imagepath || '';
+    const imageUrl = imgPath ? 'https://toutatix.axel-l.me/data/' + imgPath : 'img/placeholder.png';
+    const winVal = item.winned || item.win || 0;
+    const winStatus = winVal == 1 ? 'Trouvé !' : 'Pas trouvé';
+    const winClass = winVal == 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
+    return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
 }
