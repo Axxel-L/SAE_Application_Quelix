@@ -15,7 +15,7 @@ async function handleLogin() {
     const timeout = setTimeout(() => controller.abort(), 5000);
 
     try {
-        const response = await fetch("http://195.95.144.193:8080/api/login", {
+        const response = await fetch("https://toutatix.axel-l.me/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username: email, password: password }),
@@ -57,7 +57,7 @@ async function loadGuesses() {
     if (tableElement) tableElement.classList.add('hidden');
 
     try {
-        const response = await fetch(`http://195.95.144.193:8080/api/guesses`, {
+        const response = await fetch(`https://toutatix.axel-l.me/api/guesses`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -76,7 +76,7 @@ async function loadGuesses() {
                 const dateFormatted = new Date(item.date).toLocaleDateString('fr-FR');
                 // On récupère l'extension de l'image 
                 const extension = item.imagepath.split('.').pop();
-                const imageUrl = `http://195.95.144.193:8080/images/${item.id}.${extension}`;
+                const imageUrl = `https://toutatix.axel-l.me/images/${item.id}.${extension}`;
 
                 // On détermine le statut
                 const winStatus = item.win === 1 ? 'Trouvé !' : 'Pas trouvé';
