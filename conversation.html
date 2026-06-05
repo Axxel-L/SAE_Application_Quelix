@@ -113,39 +113,67 @@
                                 class="w-20 h-20 rounded-xl object-cover border border-white/20">
                         </div>
                         <p class="text-gray-800 text-sm leading-relaxed">
-                            Analyse en cours… 🤖✨<br>
-                            Selon mes calculs d'IA, ton image représente Astérix.<br><br>
-                            Mais attention, je garde encore un petit doute… Obélix pourrait bien pointer le bout de son
-                            nez.
+                            Analyse terminée ✨<br>
+                            Selon moi, cette image représente <strong id="guess-text">...</strong>.
                         </p>
                     </div>
                 </div>
 
                 <div class="self-end flex flex-col space-y-3 w-64">
                     <button
+                        onclick="feedback(guessName === 'Asterix' ? 1 : -1)"
                         class="w-full py-3 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition shadow-lg">
                         C'est bien Astérix !
                     </button>
                     <button
+                        onclick="feedback(guessName === 'Obélix' ? 1 : -1)"
                         class="w-full py-3 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition shadow-lg">
                         C'est bien Obélix !
                     </button>
                     <button
+                        onclick="feedback(0)"
                         class="w-full py-3 rounded-3xl glass-btn-transparent font-semibold transition shadow-lg">
                         C'est aucun des deux
                     </button>
                 </div>
             </div>
 
-            <div class="bubble-bot flex flex-col items-start mt-6">
+            <div id="stats-bubble" class="bubble-bot flex flex-col items-start mt-6 hidden">
                 <div class="message last">
-                    <p class="text-gray-800 text-sm">
-                        D'après mes calculs, j'ai fait 10 fautes, mais trouvé 214 bons résultats !
-                    </p>
+                    <p id="stats-text" class="text-gray-800 text-sm"></p>
                 </div>
             </div>
         </main>
     </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        const data = JSON.parse(sessionStorage.getItem('guessResult'));
+        if (!data) {
+            alert('Aucune donnée. Veuillez d’abord envoyer une image.');
+            window.location.href = 'new.html';
+        }
+        const guessId = data.id || data.guess_id || data.id_guess;
+        const guessName = data.prediction || data.guess;
+
+        document.getElementById('guess-text').innerText = guessName;
+        async function feedback(win) {
+            try {
+                const res = await sendFeedback(guessId, win);
+                const total = res.total_feedbacked || res.total || 0;
+                const bons = res.total_winned || res.win || 0;
+                const fautes = total - bons;
+                document.getElementById('stats-bubble').classList.remove('hidden');
+                document.getElementById('stats-text').innerText =
+                    'D\'après mes calculs, j\'ai fait ' + fautes + ' faute' + (fautes > 1 ? 's' : '') +
+                    ', mais trouvé ' + bons + ' bon' + (bons > 1 ? 's' : '') + ' résultat' + (bons > 1 ? 's' : '') + ' !';
+            } catch (e) {
+                console.error(e);
+                alert('Erreur : ' + e.message);
+            }
+        }
+    </script>
 </body>
 
 </html>

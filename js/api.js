@@ -73,17 +73,18 @@ async function loadGuesses() {
 
         if (listElement) {
             listElement.innerHTML = guesses.map(item => {
-                const dateFormatted = new Date(item.date).toLocaleDateString('fr-FR');
-                // On récupère l'extension de l'image 
-                const extension = item.imagepath.split('.').pop();
-                const imageUrl = `https://toutatix.axel-l.me/images/${item.id}.${extension}`;
+                const dateRaw = item.created_at || item.date || '';
+                const dateFormatted = dateRaw ? new Date(dateRaw).toLocaleDateString('fr-FR') : '?';
+                // Image : utiliser image_path ou imagepath
+                const imgPath = item.image_path || item.imagepath || '';
+                const imageUrl = imgPath ? 'https://toutatix.axel-l.me/' + imgPath : 'img/placeholder.png';
 
-                // On détermine le statut
-                const winStatus = item.win === 1 ? 'Trouvé !' : 'Pas trouvé';
-                // On détermine la classe CSS
-                const winClass = item.win === 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
+                // Statut
+                const winVal = item.win || 0;
+                const winStatus = winVal === 1 ? 'Trouvé !' : 'Pas trouvé';
+                const winClass = winVal === 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
 
-                return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
+                return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
             }).join('');
         }
 
@@ -91,4 +92,77 @@ async function loadGuesses() {
         console.error("Erreur lors du chargement des guesses:", error);
         if (loadingElement) loadingElement.innerText = "Impossible de charger l'historique.";
     }
+}
+
+/**
+ * Télécharge le ZIP contenant toutes les images des guesses.
+ * Réservé aux admins (isadmin = 1).
+ */
+async function downloadImagesZip() {
+    const token = localStorage.getItem('token');
+    const isAdmin = localStorage.getItem('isadmin');
+
+    if (isAdmin !== 'true') {
+        alert("Accès réservé aux administrateurs.");
+        return;
+    }
+
+    try {
+        const response = await fetch('https://toutatix.axel-l.me/api/guesses/images', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (!response.ok) throw new Error('Erreur lors du téléchargement');
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'images_toutatix.zip';
+        a.click();
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        alert('Erreur : ' + error.message);
+    }
+}
+
+/**
+ * Envoie une image à l'API pour analyse (Astérix / Obélix / Autre).
+ * @param {File} file - Le fichier image à analyser
+ * @returns {object} - { id, date, image_path, guess }
+ */
+async function uploadGuess(file) {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('guessimage', file);
+
+    const response = await fetch('https://toutatix.axel-l.me/api/guesses', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+        body: formData
+    });
+
+    if (!response.ok) throw new Error('Erreur lors de l\'envoi de l\'image');
+    return await response.json();
+}
+
+/**
+ * Envoie un feedback à l'API pour un guess.
+ * @param {number} id - L'ID du guess
+ * @param {number} win - 1 (correct), -1 (incorrect), 0 (aucun des deux)
+ */
+async function sendFeedback(id, win) {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch('https://toutatix.axel-l.me/api/guesses/' + id, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ win: win })
+    });
+
+    if (!response.ok) throw new Error('Erreur HTTP ' + response.status);
+    return await response.json();
 }

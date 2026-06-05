@@ -49,7 +49,12 @@
         <header class="px-6 py-4 flex items-center justify-between">
             <div class="flex-1"></div>
             <h1 class="text-gray-800 text-xl font-semibold tracking-wide">Accueil</h1>
-            <div class="flex-1 flex justify-end">
+            <div class="flex-1 flex justify-end gap-2">
+                <button id="admin-download-btn" class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg hidden" onclick="downloadImagesZip()" title="Télécharger les images (ZIP)">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                </button>
                 <button class="w-12 h-12 rounded-full glass-circle flex items-center justify-center text-gray-800 hover:bg-white/70 transition shadow-lg" onclick="window.location.href='new.html'">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -78,6 +83,9 @@
     <script>
         // Lancer l'affichage des données une fois la page chargée
         document.addEventListener('DOMContentLoaded', loadGuesses);
+        if (localStorage.getItem('isadmin') === 'true') {
+            document.getElementById('admin-download-btn').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>

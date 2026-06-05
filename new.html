@@ -145,6 +145,8 @@
         </div>
     </div>
 
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
     <script>
         function openModal() {
             const overlay = document.getElementById('modal-overlay');
@@ -170,10 +172,21 @@
             window.location.href = 'conversation.html';
         }
 
-        document.getElementById('file-input').addEventListener('change', function () {
-            if (this.files.length > 0) {
-                // On envoie l'image à l'API
+        document.getElementById('file-input').addEventListener('change', async function () {
+            const file = this.files[0];
+            if (!file) return;
+            closeModal();
+            const btn = document.querySelector('.glass-btn-blue');
+            btn.innerText = 'Analyse en cours...';
+            btn.disabled = true;
+            try {
+                const result = await uploadGuess(file);
+                sessionStorage.setItem('guessResult', JSON.stringify(result));
                 window.location.href = 'conversation.html';
+            } catch (e) {
+                alert('Erreur : ' + e.message);
+                btn.innerText = 'Envoyer une image';
+                btn.disabled = false;
             }
         });
     </script>
