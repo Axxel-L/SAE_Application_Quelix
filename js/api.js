@@ -245,8 +245,6 @@ async function loadStats() {
             return null;
         }
 
-        // Répartition par personnage
-        // Le champ peut être "prediction" ou "guess" selon la version de l'API
         const asterix = guesses.filter(g => {
             const val = (g.prediction || g.guess || '').toString().toLowerCase();
             return val === 'asterix';
