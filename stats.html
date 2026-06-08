@@ -70,62 +70,74 @@
         </main>
     </div>
 
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
     <script>
-        const ctx = document.getElementById('statsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Asterix', 'Obélix', 'Autres'],
-                datasets: [{
-                    label: 'Nombre de réussites',
-                    data: [12, 8, 5],
-                    backgroundColor: [
-                        'rgba(58, 198, 252, 0.7)',
-                        'rgba(114, 97, 255, 0.7)',
-                        'rgba(0, 139, 255, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(58, 198, 252, 1)',
-                        'rgba(114, 97, 255, 1)',
-                        'rgba(0, 139, 255, 1)'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#1f2937',
-                            font: { size: 14 }
-                        }
-                    }
+        async function renderStatsChart() {
+            const stats = await loadStats();
+            const ctx = document.getElementById('statsChart').getContext('2d');
+
+            const data = stats
+                ? [stats.asterix, stats.obelix, stats.autres]
+                : [0, 0, 0];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Asterix', 'Obélix', 'Autres'],
+                    datasets: [{
+                        label: 'Nombre de réussites',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(58, 198, 252, 0.7)',
+                            'rgba(114, 97, 255, 0.7)',
+                            'rgba(0, 139, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(58, 198, 252, 1)',
+                            'rgba(114, 97, 255, 1)',
+                            'rgba(0, 139, 255, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 2,
-                            color: '#1f2937'
-                        },
-                        grid: {
-                            color: 'rgba(255,255,255,0.2)'
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#1f2937',
+                                font: { size: 14 }
+                            }
                         }
                     },
-                    x: {
-                        ticks: {
-                            color: '#1f2937'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 2,
+                                color: '#1f2937'
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.2)'
+                            }
                         },
-                        grid: {
-                            color: 'rgba(255,255,255,0.1)'
+                        x: {
+                            ticks: {
+                                color: '#1f2937'
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderStatsChart);
     </script>
 </body>
 </html>

@@ -219,3 +219,48 @@ function guessRowHTML(item) {
     const winClass = winVal == 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
     return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
 }
+
+/**
+ * Récupère les guesses depuis l'API et calcule les statistiques
+ * pour la page stats.html.
+ * @returns {{ asterix: number, obelix: number, autres: number }|null}
+ */
+async function loadStats() {
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('https://toutatix.axel-l.me/api/guesses', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) throw new Error('Erreur API');
+
+        const guesses = await response.json();
+
+        if (!Array.isArray(guesses) || guesses.length === 0) {
+            return null;
+        }
+
+        // Répartition par personnage
+        // Le champ peut être "prediction" ou "guess" selon la version de l'API
+        const asterix = guesses.filter(g => {
+            const val = (g.prediction || g.guess || '').toString().toLowerCase();
+            return val === 'asterix';
+        }).length;
+        const obelix = guesses.filter(g => {
+            const val = (g.prediction || g.guess || '').toString().toLowerCase();
+            return val === 'obelix';
+        }).length;
+        const autres = guesses.length - asterix - obelix;
+
+        return { asterix, obelix, autres };
+
+    } catch (error) {
+        console.error('Erreur chargement stats:', error);
+        return null;
+    }
+}
