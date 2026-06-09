@@ -64,6 +64,13 @@
             transform: scale(1);
             opacity: 1;
         }
+
+        /* Empêche la webcam (video/Flash) de déborder de la modale */
+        #webcam-area video,
+        #webcam-area > * {
+            max-width: 100% !important;
+            height: auto !important;
+        }
     </style>
 </head>
 
@@ -147,49 +154,11 @@
 
     <script src="js/auth.js"></script>
     <script src="js/api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+        integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        function openModal() {
-            const overlay = document.getElementById('modal-overlay');
-            overlay.style.display = 'flex';
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => overlay.classList.add('open'));
-            });
-        }
-
-        function closeModal() {
-            const overlay = document.getElementById('modal-overlay');
-            overlay.classList.remove('open');
-            setTimeout(() => overlay.style.display = 'none', 300);
-        }
-
-        function handleOverlayClick(e) {
-            if (e.target === document.getElementById('modal-overlay')) closeModal();
-        }
-
-        function openWebcam() {
-            // Ouvrir la webcam, l'enregistrer puis l'envoyer à l'API
-            // Puis on reridige vers la page de conversation
-            window.location.href = 'conversation.html';
-        }
-
-        document.getElementById('file-input').addEventListener('change', async function () {
-            const file = this.files[0];
-            if (!file) return;
-            closeModal();
-            const btn = document.querySelector('.glass-btn-blue');
-            btn.innerText = 'Analyse en cours...';
-            btn.disabled = true;
-            try {
-                const result = await uploadGuess(file);
-                sessionStorage.setItem('guessResult', JSON.stringify(result));
-                window.location.href = 'conversation.html';
-            } catch (e) {
-                alert('Erreur : ' + e.message);
-                btn.innerText = 'Envoyer une image';
-                btn.disabled = false;
-            }
-        });
+        document.getElementById('file-input').addEventListener('change', handleFileUpload);
     </script>
 </body>
-
 </html>

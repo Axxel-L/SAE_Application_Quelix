@@ -78,25 +78,27 @@
             const ctx = document.getElementById('statsChart').getContext('2d');
 
             const data = stats
-                ? [stats.asterix, stats.obelix, stats.autres]
-                : [0, 0, 0];
+                ? [stats.total, stats.reussies, stats.ratees, stats.invalides]
+                : [0, 0, 0, 0];
 
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Asterix', 'Obélix', 'Autres'],
+                    labels: ['Total', 'Réussies', 'Ratées', 'Invalides'],
                     datasets: [{
-                        label: 'Nombre de réussites',
+                        label: 'Résultats des feedbacks',
                         data: data,
                         backgroundColor: [
                             'rgba(58, 198, 252, 0.7)',
-                            'rgba(114, 97, 255, 0.7)',
-                            'rgba(0, 139, 255, 0.7)'
+                            'rgba(34, 197, 94, 0.7)',
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(251, 191, 36, 0.7)'
                         ],
                         borderColor: [
                             'rgba(58, 198, 252, 1)',
-                            'rgba(114, 97, 255, 1)',
-                            'rgba(0, 139, 255, 1)'
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(251, 191, 36, 1)'
                         ],
                         borderWidth: 1,
                         borderRadius: 8,

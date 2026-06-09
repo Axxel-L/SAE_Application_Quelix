@@ -2,6 +2,7 @@
 const GUESSES_PAGE_SIZE = 10;
 let guessesCurrentPage = 1;
 let allGuessesData = [];
+let capturedDataUri = null; // Photo capturée par la webcam
 
 /* 
 * Permet de se connecter à l'API avec les identifiants de l'utilisateur
@@ -245,20 +246,134 @@ async function loadStats() {
             return null;
         }
 
-        const asterix = guesses.filter(g => {
-            const val = (g.prediction || g.guess || '').toString().toLowerCase();
-            return val === 'asterix';
-        }).length;
-        const obelix = guesses.filter(g => {
-            const val = (g.prediction || g.guess || '').toString().toLowerCase();
-            return val === 'obelix';
-        }).length;
-        const autres = guesses.length - asterix - obelix;
+        const total = guesses.length;
+        const reussies  = guesses.filter(g => g.win === 1).length;
+        const ratees    = guesses.filter(g => g.win === -1).length;
+        const invalides = guesses.filter(g => g.win === 0).length;
 
-        return { asterix, obelix, autres };
+        return { total, reussies, ratees, invalides };
 
     } catch (error) {
         console.error('Erreur chargement stats:', error);
         return null;
     }
+}
+
+/**
+ * Ouvre la modale pour l'upload d'une image.
+ */
+function openModal() {
+    const o = document.getElementById('modal-overlay');
+    o.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => o.classList.add('open')));
+}
+
+function closeModal() {
+    try { Webcam.reset(); } catch (e) {}
+    capturedDataUri = null;
+    const o = document.getElementById('modal-overlay');
+    o.classList.remove('open');
+    setTimeout(() => o.style.display = 'none', 300);
+}
+
+function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+/**
+ * Ouvre la webcam dans la modale
+ */
+function openWebcam() {
+    capturedDataUri = null;
+    document.getElementById('modal-box').innerHTML =
+        '<div class="flex justify-center pt-3 pb-1"><div class="w-10 h-1 rounded-full bg-gray-300"></div></div>' +
+        '<div class="px-6 pt-4 pb-6">' +
+            '<h3 class="text-lg font-semibold text-gray-900 mb-4">Webcam</h3>' +
+            '<div id="webcam-area" class="rounded-2xl overflow-hidden bg-black mb-4" style="aspect-ratio:4/3;min-height:240px"></div>' +
+            '<div class="flex gap-3">' +
+                '<button onclick="capturePhoto()" class="flex-1 py-3.5 rounded-2xl text-white font-semibold text-base transition active:scale-95" style="background:rgba(0,139,255,0.9);box-shadow:0 4px 14px rgba(0,139,255,0.35)">📸 Capturer</button>' +
+                '<button onclick="stopWebcamAndReturn()" class="py-3.5 px-4 rounded-2xl text-gray-600 font-semibold text-base transition active:scale-95 bg-gray-200/70">Retour</button>' +
+            '</div>' +
+        '</div>';
+    Webcam.set({ width: 320, height: 240, image_format: 'jpeg', jpeg_quality: 90 });
+    Webcam.on('error', function (err) { alert('Erreur webcam : ' + (err || 'Accès refusé.')); stopWebcamAndReturn(); });
+    Webcam.attach('#webcam-area');
+}
+
+function capturePhoto() {
+    Webcam.snap(function (uri) {
+        capturedDataUri = uri;
+        document.getElementById('modal-box').innerHTML =
+            '<div class="flex justify-center pt-3 pb-1"><div class="w-10 h-1 rounded-full bg-gray-300"></div></div>' +
+            '<div class="px-6 pt-4 pb-6">' +
+                '<h3 class="text-lg font-semibold text-gray-900 mb-4">Aperçu</h3>' +
+                '<div class="rounded-2xl overflow-hidden mb-4"><img src="' + uri + '" class="w-full object-cover rounded-2xl"></div>' +
+                '<div class="flex gap-3">' +
+                    '<button onclick="sendWebcamPhoto()" class="flex-1 py-3.5 rounded-2xl text-white font-semibold text-base transition active:scale-95" style="background:rgba(0,139,255,0.9);box-shadow:0 4px 14px rgba(0,139,255,0.35)">✨ Envoyer</button>' +
+                    '<button onclick="retakePhoto()" class="py-3.5 px-4 rounded-2xl text-gray-600 font-semibold text-base transition active:scale-95 bg-gray-200/70">🔄 Reprendre</button>' +
+                '</div>' +
+            '</div>';
+    });
+}
+
+function retakePhoto() { capturedDataUri = null; openWebcam(); }
+
+function stopWebcamAndReturn() { try { Webcam.reset(); } catch (e) {} capturedDataUri = null; resetModalMenu(); }
+
+/**
+ * Convertit une data URI (base64) en Blob pour pouvoir l'envoyer à l'API.
+ * @param {string} uri - La data URI à convertir
+ * @returns {Blob} - Le Blob résultant
+ */
+function dataURItoBlob(uri) {
+    var b = atob(uri.split(',')[1]), m = uri.split(',')[0].split(':')[1].split(';')[0];
+    var a = new Uint8Array(b.length);
+    for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i);
+    return new Blob([a], { type: m });
+}
+
+async function sendWebcamPhoto() {
+    if (!capturedDataUri) return;
+    var uri = capturedDataUri;
+    closeModal();
+    var btn = document.querySelector('.glass-btn-blue');
+    btn.innerText = 'Analyse en cours...'; btn.disabled = true;
+    try {
+        var file = new File([dataURItoBlob(uri)], 'webcam.jpg', { type: 'image/jpeg' });
+        var r = await uploadGuess(file);
+        sessionStorage.setItem('guessResult', JSON.stringify(r));
+        window.location.href = 'conversation.html';
+    } catch (e) { alert('Erreur : ' + e.message); btn.innerText = 'Envoyer une image'; btn.disabled = false; }
+}
+
+/**
+ * Gère l'upload d'un fichier depuis le menu de la modale.
+ */
+async function handleFileUpload() {
+    var file = this.files[0];
+    if (!file) return;
+    closeModal();
+    var btn = document.querySelector('.glass-btn-blue');
+    btn.innerText = 'Analyse en cours...'; btn.disabled = true;
+    try {
+        var r = await uploadGuess(file);
+        sessionStorage.setItem('guessResult', JSON.stringify(r));
+        window.location.href = 'conversation.html';
+    } catch (e) { alert('Erreur : ' + e.message); btn.innerText = 'Envoyer une image'; btn.disabled = false; }
+}
+
+/**
+ * Réinitialise le contenu de la modale pour revenir au menu d'origine
+ */
+function resetModalMenu() {
+    document.getElementById('modal-box').innerHTML =
+        '<div class="flex justify-center pt-3 pb-1"><div class="w-10 h-1 rounded-full bg-gray-300"></div></div>' +
+        '<div class="px-6 pt-4 pb-2">' +
+            '<h3 class="text-lg font-semibold text-gray-900 mb-1">Importe une image</h3>' +
+            '<p class="text-gray-500 text-sm mb-6">ou prends une photo avec la webcam</p>' +
+            '<input type="file" id="file-input" accept="image/*" class="hidden">' +
+            '<button onclick="document.getElementById(\'file-input\').click()" class="w-full py-3.5 rounded-2xl text-white font-semibold text-base mb-3 transition active:scale-95" style="background:rgba(0,139,255,0.9);box-shadow:0 4px 14px rgba(0,139,255,0.35)">Choisir un fichier</button>' +
+            '<button onclick="openWebcam()" class="w-full py-3.5 rounded-2xl text-white font-semibold text-base mb-5 transition active:scale-95" style="background:rgba(0,139,255,0.9);box-shadow:0 4px 14px rgba(0,139,255,0.35)">📷 Ouvrir la webcam</button>' +
+        '</div>';
+    document.getElementById('file-input').addEventListener('change', handleFileUpload);
 }
