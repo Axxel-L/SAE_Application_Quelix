@@ -167,7 +167,7 @@ async function downloadImagesZip() {
 
         if (!response.ok) throw new Error('Erreur lors du téléchargement');
 
-        const blob = await response.blob();
+        const blob = await response.blob(); // Transforme la réponse en fichier binaire
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
