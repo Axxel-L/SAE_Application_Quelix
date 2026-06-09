@@ -84,7 +84,6 @@ async function loadGuesses() {
         allGuessesData = guesses;
         guessesCurrentPage = 1;
         renderGuessesPage();
-        console.log('Guesses bruts:', guesses);
 
     } catch (error) {
         console.error("Erreur lors du chargement des guesses:", error);
@@ -132,6 +131,20 @@ function goToGuessesPage(page) {
     guessesCurrentPage = page;
     renderGuessesPage();
     document.getElementById('guesses-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* Système de pagination pour l'historique des guesses 
+* Génère le HTML d'une ligne. 
+*/
+function guessRowHTML(item) {
+    const dateRaw = item.created_at || item.date || '';
+    const dateFormatted = dateRaw ? new Date(dateRaw).toLocaleDateString('fr-FR') : '?';
+    const imgPath = item.filename || item.image_path || item.imagepath || '';
+    const imageUrl = imgPath ? 'https://toutatix.axel-l.me/data/' + imgPath : 'img/placeholder.png';
+    const winVal = item.winned || item.win || 0;
+    const winStatus = winVal == 1 ? 'Trouvé !' : 'Pas trouvé';
+    const winClass = winVal == 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
+    return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
 }
 
 /**
@@ -189,7 +202,7 @@ async function uploadGuess(file) {
 /**
  * Envoie un feedback à l'API pour un guess.
  * @param {number} id - L'ID du guess
- * @param {number} win - 1 (correct), -1 (incorrect), 0 (aucun des deux)
+ * @param {number} win - 1 (correct), -1 (incorrect)
  */
 async function sendFeedback(id, win) {
     const token = localStorage.getItem('token');
@@ -205,20 +218,6 @@ async function sendFeedback(id, win) {
 
     if (!response.ok) throw new Error('Erreur HTTP ' + response.status);
     return await response.json();
-}
-
-/* Système de pagination pour l'historique des guesses 
-* Génère le HTML d'une ligne. 
-*/
-function guessRowHTML(item) {
-    const dateRaw = item.created_at || item.date || '';
-    const dateFormatted = dateRaw ? new Date(dateRaw).toLocaleDateString('fr-FR') : '?';
-    const imgPath = item.filename || item.image_path || item.imagepath || '';
-    const imageUrl = imgPath ? 'https://toutatix.axel-l.me/data/' + imgPath : 'img/placeholder.png';
-    const winVal = item.winned || item.win || 0;
-    const winStatus = winVal == 1 ? 'Trouvé !' : 'Pas trouvé';
-    const winClass = winVal == 1 ? 'bg-green-400/20 text-green-300' : 'bg-red-400/20 text-red-300';
-    return `<tr class="table-row-separator"><td class="px-3 py-3"><img src="img/avatar.png" class="w-10 h-10 rounded-full object-cover border border-white/20" alt="avatar"></td><td class="px-3 py-3 text-sm text-gray-800">${dateFormatted}</td><td class="px-3 py-3"><img src="${imageUrl}" class="w-10 h-10 rounded-lg object-cover border border-white/20" alt="img" onerror="this.src='img/placeholder.png'"></td><td class="px-3 py-3 text-sm text-gray-800">${item.prediction || item.guess || 'Aucun'}</td><td class="px-3 py-3"><span class="${winClass} px-2 py-1 rounded-full text-xs">${winStatus}</span></td></tr>`;
 }
 
 /**
@@ -247,11 +246,10 @@ async function loadStats() {
         }
 
         const total = guesses.length;
-        const reussies  = guesses.filter(g => g.win === 1).length;
-        const ratees    = guesses.filter(g => g.win === -1).length;
-        const invalides = guesses.filter(g => g.win === 0).length;
+        const reussies = guesses.filter(g => g.win === 1).length;
+        const ratees   = guesses.filter(g => g.win === -1 || g.win === 0).length;
 
-        return { total, reussies, ratees, invalides };
+        return { total, reussies, ratees };
 
     } catch (error) {
         console.error('Erreur chargement stats:', error);

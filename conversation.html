@@ -121,12 +121,12 @@
 
                 <div class="self-end flex flex-col space-y-3 w-64">
                     <button
-                        onclick="feedback(guessName === 'Asterix' ? 1 : -1)"
+                        onclick="feedback(guessLower === 'asterix' ? 1 : -1)"
                         class="w-full py-3 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition shadow-lg">
                         C'est bien Astérix !
                     </button>
                     <button
-                        onclick="feedback(guessName === 'Obélix' ? 1 : -1)"
+                        onclick="feedback(guessLower === 'obelix' ? 1 : -1)"
                         class="w-full py-3 rounded-3xl glass-btn-blue text-white font-semibold hover:bg-[#008BFF]/90 transition shadow-lg">
                         C'est bien Obélix !
                     </button>
@@ -156,6 +156,7 @@
         }
         const guessId = data.id || data.guess_id || data.id_guess;
         const guessName = data.prediction || data.guess;
+        const guessLower = (guessName || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
         document.getElementById('guess-text').innerText = guessName;
         async function feedback(win) {
